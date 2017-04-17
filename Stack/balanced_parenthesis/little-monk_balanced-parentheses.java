@@ -13,19 +13,22 @@ class Main{
         int count = 0;
         int last = 0;
 
-        for (int i=0; i<size; i++){
+        while(size-- != 0){
             int numb = sc.nextInt();
             if (numb > 0){
+                if (!parenthesis.isEmpty()){
+                    last = count;
+                    count = 0;
+                }
                 parenthesis.push(numb);
             }
             if (numb < 0){
                 if (!parenthesis.isEmpty()){
                     int temp = parenthesis.pop();
-                    if (temp == (numb * -1)){
+                    if (temp == (-numb)){
                         count ++;
                         if(parenthesis.isEmpty()){
                             count += last;
-                            last = count;
                         }
                         max = count > max ? count : max;
                     }
