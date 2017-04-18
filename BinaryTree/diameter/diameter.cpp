@@ -38,7 +38,6 @@ int maxDepth(struct node* node)
 } 
 
 int diameter(struct node * node, int* height){
-    cout << "Node: " << node->data << endl;
     if(node == NULL){
         *height = 0;
         return 0;
@@ -51,10 +50,6 @@ int diameter(struct node * node, int* height){
     int rightDiameter = diameter(node->right, &rightHeight);
 
     *height = max(leftHeight, rightHeight) + 1;
-    cout << "lh: " << leftHeight << ", rh: " << rightHeight << endl;
-    cout << "height: " << *height << endl;
-    cout << "left Diameter: " << leftDiameter << endl;
-    cout << "right Diameter: " << rightDiameter << endl; 
 
     return max(leftHeight + rightHeight + 1, max(leftDiameter, rightDiameter));
     
@@ -77,13 +72,16 @@ int main(){
         actualNode = root;
 
         for (int c=0; c<directions.size(); c++){
-            if (directions[c] == 'L')
+            if (directions[c] == 'L'){
+                if (actualNode->left == NULL)
+                    actualNode->left = newnode(value);
                 actualNode = actualNode->left;
-            else
+            }
+            else{
+                if (actualNode->right == NULL)
+                    actualNode->right = newnode(value);
                 actualNode = actualNode->right;
-
-            if (actualNode == NULL)
-                actualNode = newnode(value);
+            }
         }
     }
 
