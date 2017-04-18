@@ -2,7 +2,11 @@
 using namespace std;
 #define LL long long int
 
-/*
+int max(int a, int b)
+{
+  return (a >= b)? a: b;
+}  
+
 struct node
 {
     int data;                 //Data element
@@ -29,32 +33,62 @@ int maxDepth(struct node* node)
         int rDepth = maxDepth(node->right);
 
         // use the larger one
-        if (lDepth > rDepth) 
-            return(lDepth+1);
-        else 
-            return(rDepth+1);
+        return max(lDepth, rDepth) + 1;
     }
 } 
 
-*/
+int diameter(struct node * node, int* height){
+    cout << "Node: " << node->data << endl;
+    if(node == NULL){
+        *height = 0;
+        return 0;
+    }
+
+    int leftHeight = 0;
+    int rightHeight = 0;
+
+    int leftDiameter = diameter(node->left, &leftHeight);
+    int rightDiameter = diameter(node->right, &rightHeight);
+
+    *height = max(leftHeight, rightHeight) + 1;
+    cout << "lh: " << leftHeight << ", rh: " << rightHeight << endl;
+    cout << "height: " << *height << endl;
+    cout << "left Diameter: " << leftDiameter << endl;
+    cout << "right Diameter: " << rightDiameter << endl; 
+
+    return max(leftHeight + rightHeight + 1, max(leftDiameter, rightDiameter));
+    
+}
+
 int main(){
     int nodes_count;
     int value;
-    int leftDeep = 0;
-    int rightDeep = 0;
+    struct node* root;
+    struct node* actualNode;
 
     cin >> nodes_count >> value;
+
+    root = newnode(value);
 
     for(int i=0; i<nodes_count - 1; i++){
         string directions;
         cin >> directions >> value;
 
-        if (directions[0] == 'L' && directions.size() > leftDeep)
-            leftDeep = directions.size();
-        else if (directions[0] == 'R' && directions.size() > rightDeep)
-            rightDeep = directions.size();
+        actualNode = root;
+
+        for (int c=0; c<directions.size(); c++){
+            if (directions[c] == 'L')
+                actualNode = actualNode->left;
+            else
+                actualNode = actualNode->right;
+
+            if (actualNode == NULL)
+                actualNode = newnode(value);
+        }
     }
-    cout << leftDeep + rightDeep + 1 << endl;
+
+    int height = 0;
+    cout << diameter(root, &height) << endl;
 
     return 0;
 }
