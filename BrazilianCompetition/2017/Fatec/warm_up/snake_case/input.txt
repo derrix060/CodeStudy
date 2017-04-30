@@ -1,0 +1,5 @@
+class user
+currentUser
+class amazing_pencil_sharpener
+grandma
+theStruggleIsReal
